@@ -3,7 +3,7 @@ import java.util.List;
 public interface CartDao {
     public List getAllCarts();
 
-    public Cart getCart(String id);
+    public Cart getCart(int id);
 
     public void updateProduct(Cart cart);
 
