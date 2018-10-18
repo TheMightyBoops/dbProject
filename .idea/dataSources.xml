@@ -7,5 +7,11 @@
       <jdbc-driver>org.apache.derby.jdbc.EmbeddedDriver</jdbc-driver>
       <jdbc-url>jdbc:derby:$PROJECT_DIR$/CoffeeDB</jdbc-url>
     </data-source>
+    <data-source source="LOCAL" name="StoreDB" uuid="8f90e036-59ab-4c7a-8440-95e4cf159864">
+      <driver-ref>derby.embedded</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>org.apache.derby.jdbc.EmbeddedDriver</jdbc-driver>
+      <jdbc-url>jdbc:derby:$PROJECT_DIR$/StoreDB;create=true</jdbc-url>
+    </data-source>
   </component>
 </project>

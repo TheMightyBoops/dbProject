@@ -11,11 +11,15 @@ import java.sql.*;
 public class Main {
     public static void main(String[] args) {
 
-        CreateCoffeeDB cc = new CreateCoffeeDB();
+        CreateStoreDB storeDB = new CreateStoreDB();
+        System.out.println("db created");
+
+
+        /*CreateCoffeeDB cc = new CreateCoffeeDB();
         outputDB();
         addContent();
         System.out.println("==========================");
-        outputDB();
+        outputDB();*/
     }
 
     public static void addContent() {

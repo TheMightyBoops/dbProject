@@ -21,13 +21,12 @@ public class CartImplementation implements CartDao {
 
     @Override
     public void updateProduct(Cart cart) {
-        //TODO
         carts.get(cart.getId());
     }
 
     @Override
     public void deleteProduct(Cart cart) {
-        //TODO
+        //TODO make db
     }
 
     @Override
