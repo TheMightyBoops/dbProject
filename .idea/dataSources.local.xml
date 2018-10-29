@@ -10,7 +10,7 @@
       <introspection-schemas>*:@</introspection-schemas>
     </data-source>
     <data-source name="StoreDB" uuid="8f90e036-59ab-4c7a-8440-95e4cf159864">
-      <database-info product="Apache Derby" version="10.14.1.0 - (1808820)" jdbc-version="4.2" driver-name="Apache Derby Embedded JDBC Driver" driver-version="10.14.1.0 - (1808820)">
+      <database-info product="Apache Derby" version="10.13.1.1 - (Unversioned directory)" jdbc-version="4.2" driver-name="Apache Derby Embedded JDBC Driver" driver-version="10.13.1.1 - (Unversioned directory)">
         <identifier-quote-string>&quot;</identifier-quote-string>
       </database-info>
       <case-sensitivity plain-identifiers="upper" quoted-identifiers="exact" />

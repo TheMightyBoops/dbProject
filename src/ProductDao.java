@@ -1,9 +1,9 @@
 import java.util.List;
 
-public interface RockDao {
+public interface ProductDao {
     public List getAllProducts();
 
-    public Product getProduct(String id);
+    public Product getProduct(Product product);
 
     public void updateProduct(Product product);
 

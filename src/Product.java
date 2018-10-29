@@ -4,8 +4,8 @@ import java.io.Serializable;
 
 
 public class Product implements Serializable {
+    private int id;
     private String
-            id,
             name,
             description;
 
@@ -14,6 +14,12 @@ public class Product implements Serializable {
 
     public Product() {
 
+    }
+
+    public Product(String name, String description, double price) {
+        setPrice(price);
+        setName(name);
+        setDescription(description);
     }
 
     public Product(String selectedName) {
@@ -25,7 +31,7 @@ public class Product implements Serializable {
                         "standard rock we do at " +
                         "Rocks and Rocks alone");
                 setPrice(4.99);
-                setId("0");
+                setId(0);
                 break;
 
             case "Classic Granite":
@@ -35,7 +41,7 @@ public class Product implements Serializable {
                         "and flair to your rock, " +
                         "you only live once.");
                 setPrice(6.00);
-                setId("1");
+                setId(1);
                 break;
 
             case "Dark Slate":
@@ -44,13 +50,13 @@ public class Product implements Serializable {
                 setDescription("Dark Slate Like a chalkboard, " +
                         "but you buy it from us");
                 setPrice(5.00);
-                setId("2");
+                setId(2);
                 break;
         }
 
     }
 
-    public Product(String id, String name, String description,
+    public Product(int id, String name, String description,
                    double price, Image image) {
         setId(id);
         setName(name);
@@ -60,11 +66,11 @@ public class Product implements Serializable {
     }
 
     // Accessors and mutators
-    public String getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 

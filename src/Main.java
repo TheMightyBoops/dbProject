@@ -1,4 +1,9 @@
+import com.sun.org.apache.bcel.internal.generic.Select;
+
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
 
 
 /**
@@ -6,120 +11,130 @@ import java.sql.*;
  * be able to list records
  *
  * @author lucas
- *
  */
 public class Main {
     public static void main(String[] args) {
 
-        CreateStoreDB storeDB = new CreateStoreDB();
-        System.out.println("db created");
 
+        ProductImplementation prodDb = new ProductImplementation();
+        // create all the products
+        prodDb.addProduct(new Product("Old Gray", "This classic is the most basic, " +
+                "standard rock that we do at Rocks and rocks alone", 4.99));
+        prodDb.addProduct(new Product("Classic Granite", "Add a little style and flair " +
+                "to your rock.", 6.00));
+        prodDb.addProduct(new Product("Dark Slate", "Like a chalkboard, " +
+                "but you buy it from us", 5.00));
+        Scanner key = new Scanner(System.in);
 
-        /*CreateCoffeeDB cc = new CreateCoffeeDB();
-        outputDB();
-        addContent();
-        System.out.println("==========================");
-        outputDB();*/
-    }
+        CartImplementation cartDb = new CartImplementation();
 
-    public static void addContent() {
-        final String DB_URL = "jdbc:derby:CoffeeDB";
-        Statement stmt = null;
-        Connection conn = null;
-        try{
-            System.out.println("Connecting to database...");
-            conn = DriverManager.getConnection(DB_URL);
-            System.out.println("Creating statement...");
-            stmt = conn.createStatement();
-            System.out.println("Inserting records into the table...");
-            stmt = conn.createStatement();
+        System.out.println("Select an Option");
+        System.out.println("****************");
+        System.out.println("\n1-List all products");
+        System.out.println("2-Add one to the cart");
+        System.out.println("3-See your cart");
+        System.out.println("4-Exit\n");
+        int selection = key.nextInt();
+        key.nextLine();
 
-            String sql = "INSERT INTO Coffee " +
-                    "VALUES ('Bering Sea Blend' , '20-110',  18.55)";
-            stmt.executeUpdate(sql);
-            sql = "INSERT INTO Coffee " +
-                    "VALUES ('Bali Blue Moon', '20-115', 15.45)";
-            stmt.executeUpdate(sql);
-            sql = "INSERT INTO Coffee " +
-                    "VALUES ('Brazil Mogiana', '20-120', 11.30)";
-            stmt.executeUpdate(sql);
-            sql = "INSERT INTO Coffee " +
-                    "VALUES('Ethiopia Harrar', '20-125', 12.28)";
-            stmt.executeUpdate(sql);
-            System.out.println("Inserted records into the table...");
-            //Clean-up environment
-            stmt.close();
-            conn.close();
-        }catch(SQLException se){
-            //Handle errors for JDBC
-            se.printStackTrace();
-        }catch(Exception e){
-            //Handle errors for Class.forName
-            e.printStackTrace();
-        }finally{
-            //finally block used to close resources
-            try{
-                if(stmt!=null)
-                    stmt.close();
-            }catch(SQLException se2){
-            }// nothing we can do
-            try{
-                if(conn!=null)
-                    conn.close();
-            }catch(SQLException se){
-                se.printStackTrace();
-            }//end finally try
-        }//end try
-    }
-
-
-    public static void outputDB() {
-        final String DB_URL = "jdbc:derby:CoffeeDB";
-        Statement stmt = null;
-        Connection conn = null;
-        try{
-            System.out.println("Connecting to database...");
-            conn = DriverManager.getConnection(DB_URL);
-            System.out.println("Creating statement...");
-            stmt = conn.createStatement();
-            String sql;
-            sql = "SELECT ProdNum, Description, Price FROM Coffee";
-            ResultSet rs = stmt.executeQuery(sql);
-
-            while(rs.next()){
-                //Retrieve by column name
-                String id  = rs.getString("ProdNum");
-                double price = rs.getDouble("Price");
-                String description = rs.getString("Description");
-
-                //Display values
-                System.out.print("ID: " + id.trim());
-                System.out.print(", Price: " + price);
-                System.out.println(", Description: " + description);
+        while (selection != 4) {
+            if (selection == 1) {
+                listAllProducts(prodDb);
             }
-            //STEP 6: Clean-up environment
-            rs.close();
-            stmt.close();
-            conn.close();
-        }catch(SQLException se){
-            //Handle errors for JDBC
-            se.printStackTrace();
-        }catch(Exception e){
-            //Handle errors for Class.forName
-            e.printStackTrace();
-        }finally{
-            //finally block used to close resources
-            try{
-                if(stmt!=null)
-                    stmt.close();
-            }catch(SQLException se2){
-            }// nothing we can do
-            try{
-                if(conn!=null)
-                    conn.close();
-            }catch(SQLException se){
-                se.printStackTrace();
-            }//end finally try
-        }//end try
+
+            if (selection == 2) {
+                addAnItemToTheCart(cartDb, key);
+            }
+
+            if (selection == 3) {
+                displayCart(cartDb, prodDb);
+            }
+
+            System.out.println("Select an Option");
+            System.out.println("****************");
+            System.out.println("\n1-List all products");
+            System.out.println("2-Add one to the cart");
+            System.out.println("3-See your cart");
+            System.out.println("4-Exit\n");
+
+            selection = key.nextInt();
+            key.nextLine();
+        }
+
+        try {
+            Connection connection = DriverManager.getConnection(
+                    "jdbc:derby:/home/lucas/School/DistJava/dbProject/StoreDB;" +
+                            "create=true");
+            CreateStoreDB.dropTables(connection);
+        } catch (SQLException sqle) {
+
+        }
+        prodDb.closeProductConnection();
+        cartDb.closeCartConnection();
+    }
+
+    private static void listAllProducts(ProductImplementation prodDB) {
+
+
+        List<Product> products = prodDB.getAllProducts();
+        for (Product p : products) {
+            System.out.println("ID: " + p.getId());
+            System.out.println("Name:" + p.getName());
+            System.out.println("Description: " + p.getDescription());
+            System.out.println("Price: " + p.getPrice() + "\n");
+        }
+
+    }
+
+    private static void addAnItemToTheCart(CartImplementation cartDB, Scanner key) {
+        System.out.println("Which item?\n1)Old Gray\n2)Classic " +
+                "Granite\n3)Dark Slate\n");
+        int selection = key.nextInt();
+        key.nextLine();
+
+        switch (selection) {
+            case 1:
+                cartDB.addCart(new Cart(1, 1));
+                break;
+            case 2:
+                cartDB.addCart(new Cart(1, 2));
+                break;
+            case 3:
+                cartDB.addCart(new Cart(1, 3));
+                break;
+            default:
+                System.out.println("try again");
+                addAnItemToTheCart(cartDB, key);
+        }
+    }
+
+    private static void displayCart(CartImplementation cartBD,
+                                    ProductImplementation prodDB) {
+        try {
+            Connection connection = DriverManager.getConnection(
+                    "jdbc:derby:/home/lucas/School/DistJava/dbProject/StoreDB;" +
+                            "create=true");
+
+            Statement sql = connection.createStatement();
+            ResultSet resultSet = sql.executeQuery(
+              "SELECT Name, DESCRIPTION, PRICE " +
+                      "FROM Carts " +
+                      "Inner JOIN PRODUCTS " +
+                      "On PRODUCTS.PRODUCTID = CARTS.ProductId"
+            );
+
+            while (resultSet.next()) {
+                System.out.println("Product:" +
+                        resultSet.getString("Name") +
+                        "\nDescription: " +
+                        resultSet.getString("Description") +
+                        "\nPrice:" +
+                        resultSet.getString("Price")
+                        + "\n"
+                );
+            }
+        }catch (Exception e) {
+            System.out.println("Couldn't display cart\n" + e.getMessage());
+        }
     }
 }
